@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Deploy via SSH
@@ -20,7 +20,9 @@ jobs:
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.IWORKMATE }}
           script: |
+            echo "Connecting to server and deploying Ultimate Language project..."
             cd ~/n8n-docker-caddy/ultimateLanguage
             git pull origin master
             cd ..
             docker compose restart web2
+            echo "Deployment complete ✅"
