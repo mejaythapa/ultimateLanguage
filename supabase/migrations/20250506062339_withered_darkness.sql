@@ -1,5 +1,5 @@
 /*
-  # Create initial database schema for Alpha PTE & NAATI website
+  # Create initial database schema for PTE & NAATI website
 
   1. New Tables
     - `courses` - Stores information about available PTE and NAATI courses
