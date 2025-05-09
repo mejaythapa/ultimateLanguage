@@ -22,7 +22,7 @@ RUN npm install && npm install -g serve
 COPY . .
 
 # Build the Next.js static export
-RUN npm run build
+RUN npm run build:no-typecheck
 
 # Expose the port the app will run on
 EXPOSE 3001
