@@ -1,16 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container } from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import { loadStripe } from '@stripe/stripe-js';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
+interface BookingDetails {
+  name: string;
+  email: string;
+  phone: string;
+  courseId: string;
+  courseName: string;
+  coursePrice: number;
+  preferredDate: string;
+  message: string;
+}
+
 export default function PaymentPage() {
   const { toast } = useToast();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState<BookingDetails | null>(null);
+
+  useEffect(() => {
+    // Retrieve booking details from session storage
+    const storedDetails = sessionStorage.getItem('bookingDetails');
+    if (storedDetails) {
+      setBookingDetails(JSON.parse(storedDetails));
+    } else {
+      router.push('/booking');
+    }
+  }, [router]);
 
   const handlePayment = async () => {
     try {
@@ -23,10 +48,11 @@ export default function PaymentPage() {
         body: JSON.stringify({
           items: [
             {
-              price: 'price_xyz', // Replace with your actual Stripe price ID
+              price: `price_${bookingDetails?.courseId}`, // Replace with your actual Stripe price ID
               quantity: 1,
             },
           ],
+          bookingDetails,
         }),
       });
 
@@ -54,16 +80,24 @@ export default function PaymentPage() {
     }
   };
 
+  if (!bookingDetails) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <main>
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-950 dark:to-gray-900">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 font-serif">
-              Secure Payment
+              Complete Your Booking
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Complete your course enrollment with our secure payment system
+              Review your booking details and proceed with secure payment
             </p>
           </div>
         </Container>
@@ -73,20 +107,28 @@ export default function PaymentPage() {
         <Container>
           <div className="max-w-2xl mx-auto">
             <div className="bg-card border border-border rounded-xl p-8 shadow-sm">
-              <h2 className="text-2xl font-semibold mb-6">Order Summary</h2>
+              <h2 className="text-2xl font-semibold mb-6">Booking Summary</h2>
               
               <div className="space-y-4 mb-8">
                 <div className="flex justify-between py-3 border-b border-border">
                   <span className="font-medium">Course</span>
-                  <span>PTE Academic Complete Preparation</span>
+                  <span>{bookingDetails.courseName}</span>
                 </div>
                 <div className="flex justify-between py-3 border-b border-border">
-                  <span className="font-medium">Duration</span>
-                  <span>8 weeks</span>
+                  <span className="font-medium">Student Name</span>
+                  <span>{bookingDetails.name}</span>
                 </div>
                 <div className="flex justify-between py-3 border-b border-border">
-                  <span className="font-medium">Price</span>
-                  <span className="text-xl font-bold">$499.00</span>
+                  <span className="font-medium">Email</span>
+                  <span>{bookingDetails.email}</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-border">
+                  <span className="font-medium">Preferred Date</span>
+                  <span>{new Date(bookingDetails.preferredDate).toLocaleDateString()}</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-border">
+                  <span className="font-medium">Amount</span>
+                  <span className="text-xl font-bold">${bookingDetails.coursePrice}</span>
                 </div>
               </div>
 
@@ -103,7 +145,14 @@ export default function PaymentPage() {
                 size="lg"
                 disabled={loading}
               >
-                {loading ? 'Processing...' : 'Pay Now'}
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  'Pay Now'
+                )}
               </Button>
 
               <div className="mt-6 text-center">

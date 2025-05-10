@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import { Container } from '@/components/ui/container';
@@ -11,20 +11,22 @@ import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 const courses = [
-  { id: 1, name: 'PTE Academic Complete Preparation', type: 'pte' },
-  { id: 2, name: 'PTE Express Course', type: 'pte' },
-  { id: 3, name: 'NAATI CCL Intensive Course', type: 'naati' },
-  { id: 4, name: 'Weekend NAATI Workshop', type: 'naati' },
-  { id: 5, name: 'PTE & NAATI Combined Package', type: 'combined' },
+  { id: 1, name: 'PTE Academic Complete Preparation', type: 'pte', price: 499 },
+  { id: 2, name: 'PTE Express Course', type: 'pte', price: 299 },
+  { id: 3, name: 'NAATI CCL Intensive Course', type: 'naati', price: 599 },
+  { id: 4, name: 'Weekend NAATI Workshop', type: 'naati', price: 399 },
+  { id: 5, name: 'PTE & NAATI Combined Package', type: 'combined', price: 899 },
 ];
 
 export function BookingForm() {
   const { toast } = useToast();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedCourseType, setSelectedCourseType] = useState<string>('all');
   const [date, setDate] = useState<Date | undefined>();
@@ -61,38 +63,18 @@ export function BookingForm() {
     setIsSubmitting(true);
 
     try {
-      // In a real implementation, this would send data to Supabase
-      // const { error } = await supabase.from('bookings').insert([
-      //   {
-      //     name: formData.name,
-      //     email: formData.email,
-      //     phone: formData.phone,
-      //     course_id: parseInt(formData.courseId),
-      //     preferred_date: date.toISOString(),
-      //     message: formData.message,
-      //     status: 'pending',
-      //   }
-      // ]);
+      // Store booking details in session storage for payment flow
+      const selectedCourse = courses.find(course => course.id === parseInt(formData.courseId));
+      const bookingDetails = {
+        ...formData,
+        preferredDate: date.toISOString(),
+        courseName: selectedCourse?.name,
+        coursePrice: selectedCourse?.price,
+      };
+      sessionStorage.setItem('bookingDetails', JSON.stringify(bookingDetails));
       
-      // if (error) throw error;
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Booking Request Submitted!",
-        description: "We'll contact you shortly to confirm your booking.",
-      });
-      
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        courseId: '',
-        message: '',
-      });
-      setDate(undefined);
+      // Redirect to payment page
+      router.push('/payment');
     } catch (error) {
       console.error('Error submitting form:', error);
       toast({
@@ -193,7 +175,7 @@ export function BookingForm() {
                 <option value="" disabled>Select a course</option>
                 {filteredCourses.map(course => (
                   <option key={course.id} value={course.id}>
-                    {course.name}
+                    {course.name} - ${course.price}
                   </option>
                 ))}
               </select>
@@ -221,7 +203,6 @@ export function BookingForm() {
                     onSelect={setDate}
                     initialFocus
                     disabled={(date) => {
-                      // Disable dates in the past
                       const today = new Date();
                       today.setHours(0, 0, 0, 0);
                       return date < today;
@@ -243,8 +224,19 @@ export function BookingForm() {
               />
             </div>
             
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Book Session'}
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                'Proceed to Payment'
+              )}
             </Button>
           </form>
         </div>
