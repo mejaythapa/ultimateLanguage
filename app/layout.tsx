@@ -8,8 +8,8 @@ import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Alpha PTE & NAATI Coaching | Expert Language Certification Training',
-    template: '%s | Alpha PTE & NAATI',
+    default: 'Ultimate Language Academy | PTE & NAATI Coaching',
+    template: '%s | Ultimate Laguage Academy PTE & NAATI',
   },
   description: 'Expert coaching for PTE Academic and NAATI CCL tests. Achieve your target scores with our proven methodologies and experienced instructors.',
   keywords: ['PTE coaching', 'NAATI preparation', 'PTE Academic', 'NAATI CCL', 'language certification', 'English proficiency test', 'Australia immigration', 'language coaching'],

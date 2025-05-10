@@ -69,21 +69,21 @@ VALUES
   (
     'Sarah Johnson',
     'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    'The PTE coaching at Alpha helped me achieve a score of 79+ in just 3 weeks! The strategies and mock tests were incredibly helpful.',
+    'The PTE coaching at Ultimate Laguage Academy helped me achieve a score of 79+ in just 3 weeks! The strategies and mock tests were incredibly helpful.',
     5,
     'pte'
   ),
   (
     'Rajesh Patel',
     'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    'I passed my NAATI CCL exam on the first attempt thanks to Alpha''s comprehensive preparation. The dialog practice sessions were excellent.',
+    'I passed my NAATI CCL exam on the first attempt thanks to Ultimate Laguage Academy''s comprehensive preparation. The dialog practice sessions were excellent.',
     5,
     'naati'
   ),
   (
     'Lin Zhang',
     'https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    'After struggling with PTE for months, Alpha''s coaching made all the difference. Their tips for speaking and writing sections were invaluable.',
+    'After struggling with PTE for months, Ultimate Laguage Academy''s coaching made all the difference. Their tips for speaking and writing sections were invaluable.',
     4,
     'pte'
   ),
@@ -97,7 +97,7 @@ VALUES
   (
     'Maria Rodriguez',
     'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    'I improved my PTE score from 65 to 82 after just one month of coaching at Alpha. The personalized attention made all the difference.',
+    'I improved my PTE score from 65 to 82 after just one month of coaching at Ultimate Laguage Academy. The personalized attention made all the difference.',
     5,
     'pte'
   );

@@ -16,7 +16,7 @@ ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
 COPY package*.json ./
 
 # Install dependencies globally and add serve
-RUN npm install && npm install -g serve
+RUN npm install --production && npm install -g serve
 
 # Copy the rest of the application
 COPY . .
