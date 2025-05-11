@@ -48,7 +48,8 @@ export default function PaymentPage() {
         body: JSON.stringify({
           items: [
             {
-              price: `price_${bookingDetails?.courseId}`, // Replace with your actual Stripe price ID
+              // price: `price_${bookingDetails?.courseId}`, // Replace with your actual Stripe price ID
+              price: `price_1RNNsZ05ukmyMpYyRC3sSkdO`,
               quantity: 1,
             },
           ],
@@ -151,7 +152,7 @@ export default function PaymentPage() {
                     Processing...
                   </>
                 ) : (
-                  'Pay Now'
+                  'Checkout'
                 )}
               </Button>
 

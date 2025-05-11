@@ -12,6 +12,7 @@ export default function PaymentSuccessPage() {
   const sessionId = searchParams.get('session_id');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [paymentVerified, setPaymentVerified] = useState(false);
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -28,7 +29,14 @@ export default function PaymentSuccessPage() {
           throw new Error('Payment verification failed');
         }
 
-        // Handle successful verification
+        const data = await response.json();
+
+        if (data.success) {
+          setPaymentVerified(true); // Mark payment as verified
+        } else {
+          throw new Error(data.error || 'Payment verification failed');
+        }
+
         setLoading(false);
       } catch (err) {
         setError('Failed to verify payment');
@@ -65,6 +73,22 @@ export default function PaymentSuccessPage() {
     );
   }
 
+  if (!paymentVerified) {
+    return (
+      <Container>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
+            <p className="text-muted-foreground mb-6">Payment verification failed.</p>
+            <Button asChild>
+              <Link href="/payment">Try Again</Link>
+            </Button>
+          </div>
+        </div>
+      </Container>
+    );
+  }
+
   return (
     <main>
       <section className="pt-32 pb-16 md:pt-40 md:pb-20">
@@ -75,11 +99,11 @@ export default function PaymentSuccessPage() {
                 <CheckCircle2 className="h-12 w-12 text-green-600" />
               </div>
             </div>
-            
+
             <h1 className="text-4xl font-bold mb-4 font-serif">
               Payment Successful!
             </h1>
-            
+
             <p className="text-xl text-muted-foreground mb-8">
               Thank you for your payment. Your course enrollment is now complete.
             </p>
