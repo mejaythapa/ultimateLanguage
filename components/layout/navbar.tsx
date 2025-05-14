@@ -27,16 +27,11 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
-  const toggleDropdown = (name: string) => {
-    if (activeDropdown === name) {
-      setActiveDropdown(null);
-    } else {
-      setActiveDropdown(name);
-    }
-  };
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+    
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setScrolled(true);
@@ -48,6 +43,18 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleDropdown = (name: string) => {
+    if (activeDropdown === name) {
+      setActiveDropdown(null);
+    } else {
+      setActiveDropdown(name);
+    }
+  };
+
+  if (!isMounted) {
+    return null; // Return null on server-side to prevent hydration mismatch
+  }
 
   return (
     <header 

@@ -1,14 +1,22 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
-import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 
 export function Hero() {
   const [activeTab, setActiveTab] = useState<'pte' | 'naati'>('pte');
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null; // Return null on server-side to prevent hydration mismatch
+  }
   
   return (
     <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-950 dark:to-gray-900">
@@ -96,7 +104,6 @@ export function Hero() {
               </div>
             </div>
             
-            {/* Floating stats */}
             <div className="absolute -bottom-6 -right-6 md:bottom-auto md:right-auto md:-top-6 md:-left-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-3 px-4 min-w-[140px]">
               <div className="flex items-center">
                 <div className="bg-primary/10 rounded-full p-2 mr-3">
