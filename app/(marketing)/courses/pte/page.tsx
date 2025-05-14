@@ -7,7 +7,7 @@ import { Testimonials } from '@/components/home/testimonials';
 import { CTA } from '@/components/home/cta';
 import { CheckCircle2, Clock, Calendar, Layers, BarChart } from 'lucide-react';
 import Link from 'next/link';
-
+import { supabase } from '@/lib/supabase';
 export const metadata: Metadata = {
   title: 'PTE Academic Coaching | Ultimate Laguage Academy PTE & NAATI',
   description:
@@ -30,60 +30,70 @@ export const metadata: Metadata = {
 
 // Example PTE courses data
 // In a real application, this would come from Supabase
-const pteCourses = [
-  {
-    id: 1,
-    title: 'PTE Academic Complete Preparation',
-    description:
-      'Our flagship comprehensive PTE preparation program covering all four communicative skills with personalized feedback and guidance.',
-    duration: '8 weeks',
-    schedule: 'Weekday evenings or Weekend classes',
-    price: 499,
-    features: [
-      'Complete coverage of all PTE sections',
-      'Weekly mock tests with analysis',
-      'One-on-one feedback sessions',
-      'Small batch sizes (max 10 students)',
-      'Extended access to online resources',
-      '24/7 doubt resolution support',
-    ],
-    highlight: true,
-  },
-  {
-    id: 2,
-    title: 'PTE Express Course',
-    description:
-      'Accelerated preparation designed for busy professionals who need to achieve their target score quickly.',
-    duration: '4 weeks',
-    schedule: 'Intensive weekend sessions',
-    price: 299,
-    features: [
-      'Focused strategies for all sections',
-      'Score improvement techniques',
-      'Practice tests with feedback',
-      'Target score achievement plan',
-      'Exam day preparation guide',
-    ],
-  },
-  {
-    id: 3,
-    title: 'PTE Speaking & Writing Mastery',
-    description:
-      'Specialized course focusing on the speaking and writing sections of the PTE Academic test.',
-    duration: '6 weeks',
-    schedule: 'Twice weekly sessions',
-    price: 349,
-    features: [
-      'In-depth speaking practice sessions',
-      'Writing templates and strategies',
-      'Pronunciation and fluency training',
-      'Grammar and vocabulary enhancement',
-      'Individual feedback on recorded responses',
-    ],
-  },
-];
+// const pteCourses = [
+//   {
+//     id: 1,
+//     title: 'PTE Academic Complete Preparation',
+//     description:
+//       'Our flagship comprehensive PTE preparation program covering all four communicative skills with personalized feedback and guidance.',
+//     duration: '8 weeks',
+//     schedule: 'Weekday evenings or Weekend classes',
+//     price: 499,
+//     features: [
+//       'Complete coverage of all PTE sections',
+//       'Weekly mock tests with analysis',
+//       'One-on-one feedback sessions',
+//       'Small batch sizes (max 10 students)',
+//       'Extended access to online resources',
+//       '24/7 doubt resolution support',
+//     ],
+//     highlight: true,
+//   },
+//   {
+//     id: 2,
+//     title: 'PTE Express Course',
+//     description:
+//       'Accelerated preparation designed for busy professionals who need to achieve their target score quickly.',
+//     duration: '4 weeks',
+//     schedule: 'Intensive weekend sessions',
+//     price: 299,
+//     features: [
+//       'Focused strategies for all sections',
+//       'Score improvement techniques',
+//       'Practice tests with feedback',
+//       'Target score achievement plan',
+//       'Exam day preparation guide',
+//     ],
+//   },
+//   {
+//     id: 3,
+//     title: 'PTE Speaking & Writing Mastery',
+//     description:
+//       'Specialized course focusing on the speaking and writing sections of the PTE Academic test.',
+//     duration: '6 weeks',
+//     schedule: 'Twice weekly sessions',
+//     price: 349,
+//     features: [
+//       'In-depth speaking practice sessions',
+//       'Writing templates and strategies',
+//       'Pronunciation and fluency training',
+//       'Grammar and vocabulary enhancement',
+//       'Individual feedback on recorded responses',
+//     ],
+//   },
+// ];
 
-export default function PTEPage() {
+export default async function PTEPage() {
+  const { data: pteCourses, error } = await supabase
+    .from('courses')
+    .select('*')
+    .eq('course_type', 'pte')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching PTE courses:', error.message);
+    return <p className="text-center py-10">Failed to load courses.</p>;
+  }
   return (
     <main>
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-950 dark:to-gray-900">

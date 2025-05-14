@@ -31,28 +31,23 @@ export function ContactForm() {
     setIsSubmitting(true);
 
     try {
-      // In a real implementation, this would send data to Supabase
-      // const { error } = await supabase.from('contact_messages').insert([
-      //   {
-      //     name: formData.name,
-      //     email: formData.email,
-      //     phone: formData.phone,
-      //     message: formData.message,
-      //     read: false,
-      //   }
-      // ]);
+      const { error } = await supabase.from('contact_messages').insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          read: false,
+        },
+      ]);
 
-      // if (error) throw error;
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (error) throw error;
 
       toast({
         title: 'Message Sent!',
         description: "Thank you for contacting us. We'll get back to you soon.",
       });
 
-      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -137,7 +132,6 @@ export function ContactForm() {
             </Button>
           </form>
         </div>
-
         <div className="bg-card rounded-xl p-8 border border-border shadow-sm flex flex-col justify-between">
           <div>
             <h3 className="text-2xl font-bold mb-6 font-serif">
@@ -289,6 +283,8 @@ export function ContactForm() {
             </div>
           </div>
         </div>
+        {/* Right column with static contact info — unchanged */}
+        {/* ... keep the contact details and social icons as-is ... */}
       </div>
     </Container>
   );
