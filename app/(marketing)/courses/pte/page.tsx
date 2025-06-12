@@ -7,7 +7,8 @@ import { Testimonials } from '@/components/home/testimonials';
 import { CTA } from '@/components/home/cta';
 import { CheckCircle2, Clock, Calendar, Layers, BarChart } from 'lucide-react';
 import Link from 'next/link';
-
+import { supabase } from '@/lib/supabase';
+import Image from 'next/image';
 export const metadata: Metadata = {
   title: 'PTE Academic Coaching | Ultimate Laguage Academy PTE & NAATI',
   description:
@@ -27,63 +28,18 @@ export const metadata: Metadata = {
     type: 'website',
   },
 };
+// get data from db
+export default async function PTEPage() {
+  const { data: pteCourses, error } = await supabase
+    .from('courses')
+    .select('*')
+    .eq('course_type', 'pte')
+    .order('created_at', { ascending: false });
 
-// Example PTE courses data
-// In a real application, this would come from Supabase
-const pteCourses = [
-  {
-    id: 1,
-    title: 'PTE Academic Complete Preparation',
-    description:
-      'Our flagship comprehensive PTE preparation program covering all four communicative skills with personalized feedback and guidance.',
-    duration: '8 weeks',
-    schedule: 'Weekday evenings or Weekend classes',
-    price: 499,
-    features: [
-      'Complete coverage of all PTE sections',
-      'Weekly mock tests with analysis',
-      'One-on-one feedback sessions',
-      'Small batch sizes (max 10 students)',
-      'Extended access to online resources',
-      '24/7 doubt resolution support',
-    ],
-    highlight: true,
-  },
-  {
-    id: 2,
-    title: 'PTE Express Course',
-    description:
-      'Accelerated preparation designed for busy professionals who need to achieve their target score quickly.',
-    duration: '4 weeks',
-    schedule: 'Intensive weekend sessions',
-    price: 299,
-    features: [
-      'Focused strategies for all sections',
-      'Score improvement techniques',
-      'Practice tests with feedback',
-      'Target score achievement plan',
-      'Exam day preparation guide',
-    ],
-  },
-  {
-    id: 3,
-    title: 'PTE Speaking & Writing Mastery',
-    description:
-      'Specialized course focusing on the speaking and writing sections of the PTE Academic test.',
-    duration: '6 weeks',
-    schedule: 'Twice weekly sessions',
-    price: 349,
-    features: [
-      'In-depth speaking practice sessions',
-      'Writing templates and strategies',
-      'Pronunciation and fluency training',
-      'Grammar and vocabulary enhancement',
-      'Individual feedback on recorded responses',
-    ],
-  },
-];
-
-export default function PTEPage() {
+  if (error) {
+    console.error('Error fetching PTE courses:', error.message);
+    return <p className="text-center py-10">Failed to load courses.</p>;
+  }
   return (
     <main>
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-950 dark:to-gray-900">
@@ -100,8 +56,7 @@ export default function PTEPage() {
               </h1>
 
               <p className="text-xl text-muted-foreground mb-8">
-                Comprehensive preparation for all sections of the PTE Academic
-                test with expert instructors and proven strategies.
+              Smash Your PTE Score! Full Prep, Real Mocks, and Tutors Who Know the Exam Inside-Out.
               </p>
 
               <div className="flex flex-wrap gap-4 mb-8">
@@ -134,11 +89,14 @@ export default function PTEPage() {
             </div>
 
             <div className="relative">
-              <img
-                src="https://images.pexels.com/photos/4144179/pexels-photo-4144179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="PTE Academic Coaching"
-                className="rounded-xl shadow-xl object-cover w-full aspect-[4/3]"
-              />
+               <Image
+                  src="https://images.pexels.com/photos/4144179/pexels-photo-4144179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="PTE Academic Coaching"
+                  width={1260} // or a value that fits your layout
+                  height={945} // maintain 4:3 aspect ratio
+                  className="rounded-xl shadow-xl object-cover w-full aspect-[4/3]"
+                  unoptimized
+                />
               <div className="absolute -bottom-6 -right-6 bg-card shadow-lg rounded-lg p-4 border border-border">
                 <p className="font-bold text-2xl">79+</p>
                 <p className="text-muted-foreground">Average score</p>
@@ -307,7 +265,6 @@ export default function PTEPage() {
           </div>
         </Container>
       </section>
-
       <Testimonials />
       <CTA />
     </main>

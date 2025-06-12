@@ -22,7 +22,7 @@ export function CTA() {
                   Book a Consultation
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-primary-foreground/20 hover:bg-primary-foreground/10">
+              <Button asChild size="lg" variant="outline" className="border-primary-foreground/20 hover:bg-primary-foreground/10 text-primary">
                 <Link href="/contact" className="flex items-center">
                   <PhoneCall className="mr-2 h-5 w-5" />
                   Contact Us

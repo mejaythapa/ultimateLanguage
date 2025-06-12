@@ -8,19 +8,21 @@ import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'About Us', href: '/about' },
-  { 
-    name: 'Courses', 
-    href: '#',
-    dropdown: true,
-    items: [
-      { name: 'PTE Coaching', href: '/courses/pte' },
-      { name: 'NAATI CCL', href: '/courses/naati' },
-    ]
-  },
-  { name: 'Book Now', href: '/booking' },
+  { name: 'PTE', href: '/courses/pte' },
+  { name: 'NAATI', href: '/courses/naati' },
+  { name: 'About', href: '/about' },
+
+  // { 
+  //   name: 'Courses', 
+  //   href: '#',
+  //   dropdown: true,
+  //   items: [
+  //     { name: 'PTE Coaching', href: '/courses/pte' },
+  //     { name: 'NAATI CCL', href: '/courses/naati' },
+  //   ]
+  // },
   { name: 'Contact', href: '/contact' },
+  // { name: 'Mock Test', href: '/booking' },
 ];
 
 export function Navbar() {
@@ -62,7 +64,7 @@ export function Navbar() {
         'fixed w-full top-0 left-0 right-0 z-50 transition-all duration-300',
         scrolled 
           ? 'bg-background/95 backdrop-blur-sm shadow-md py-2' 
-          : 'bg-transparent py-4'
+          : 'border-b py-4'
       )}
     >
       <Container>
@@ -72,46 +74,56 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <div key={link.name} className="relative group">
-                {link.dropdown ? (
-                  <button 
-                    onClick={() => toggleDropdown(link.name)}
-                    className="px-4 py-2 rounded-md text-foreground hover:text-primary flex items-center"
-                  >
-                    {link.name}
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                  </button>
-                ) : (
-                  <Link 
-                    href={link.href}
-                    className="px-4 py-2 rounded-md text-foreground hover:text-primary"
-                  >
-                    {link.name}
-                  </Link>
-                )}
+          <div className="hidden md:flex items-center justify-between flex-1 ml-8">
+            {/* Left side navigation links */}
+            <div className="flex items-center space-x-1">
+              {navLinks.map((link) => (
+                <div key={link.name} className="relative group">
+                  {link.dropdown ? (
+                    <button 
+                      onClick={() => toggleDropdown(link.name)}
+                      className="px-4 py-2 rounded-md text-foreground hover:text-primary flex items-center"
+                    >
+                      {link.name}
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
+                  ) : (
+                    <Link 
+                      href={link.href}
+                      className="px-4 py-2 rounded-md text-foreground hover:text-primary"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
 
-                {link.dropdown && (
-                  <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-background border border-border hidden group-hover:block">
-                    {link.items?.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block px-4 py-2 text-sm text-foreground hover:bg-muted"
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                  {link.dropdown && (
+                    <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-background border border-border hidden group-hover:block">
+                      {link.items?.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className="block px-4 py-2 text-sm text-foreground hover:bg-muted"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            {/* Right side button */}
             <Button asChild>
+              <Link href="/booking">
+                Book a Mock Test
+              </Link>
+            </Button>
+            {/* <Button asChild>
               <Link href="/booking">
                 Get Started
               </Link>
-            </Button>
+            </Button> */}
           </div>
 
           {/* Mobile Menu Button */}
