@@ -4,6 +4,7 @@ import { Features } from '@/components/home/features';
 import { Courses } from '@/components/home/courses';
 import { Testimonials } from '@/components/home/testimonials';
 import { CTA } from '@/components/home/cta';
+import { VideoGallery } from '@/components/home/videogallery';
 
 export const metadata: Metadata = {
   title:
@@ -32,8 +33,9 @@ export default function Home() {
     <main>
       <Hero />
       <Features />
-      <Courses />
+      <VideoGallery />
       <Testimonials />
+      <Courses />
       <CTA />
     </main>
   );

@@ -6,6 +6,7 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 import { Container } from '../ui/container';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 const navLinks = [
   { name: 'PTE', href: '/courses/pte' },
@@ -61,17 +62,23 @@ export function Navbar() {
   return (
     <header 
       className={cn(
-        'fixed w-full top-0 left-0 right-0 z-50 transition-all duration-300',
+        'fixed w-full top-0 left-0 right-0 z-50 transition-all duration-300 bg-primary',
         scrolled 
-          ? 'bg-background/95 backdrop-blur-sm shadow-md py-2' 
+          ? 'border-b py-2' 
           : 'border-b py-4'
       )}
     >
       <Container>
         <nav className="flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-primary z-10 font-serif">
-            Ultimate<span className="text-secondary">Language</span>
-          </Link>
+        <Link href="/" className="flex items-center space-x-2 text-2xl font-bold text-primary z-10 font-serif">
+            <Image
+              src="/logo/ula.png"
+              alt="Ultimate Language Logo"
+              width={150}
+              height={150}
+              className="object-contain"
+            />
+        </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-between flex-1 ml-8">
@@ -90,7 +97,7 @@ export function Navbar() {
                   ) : (
                     <Link 
                       href={link.href}
-                      className="px-4 py-2 rounded-md text-foreground hover:text-primary"
+                      className="px-4 py-2 rounded-md text-white hover:text-primary hover:bg-white"
                     >
                       {link.name}
                     </Link>
@@ -114,7 +121,7 @@ export function Navbar() {
             </div>
             
             {/* Right side button */}
-            <Button asChild>
+            <Button asChild className="bg-secondary hover:bg-white hover:text-primary">
               <Link href="/booking">
                 Book a Mock Test
               </Link>
